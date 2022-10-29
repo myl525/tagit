@@ -99,10 +99,42 @@ const updateDirectoryTags = async (req, res) => {
     }
 };
 
+// delete tags (client delete tag of a file)
+const deleteDirectoryTags = async (req, res) => {
+    const dirName = req.body.dirName;
+    const fileName = req.body.fileName;
+    const tagName = req.body.tagName;
+
+    // remove this tag from selected file
+    let file = dirsData[dirName].files[fileName];
+    const indexOfTag = file.tags.indexOf(tagName);
+    file.tags.splice(indexOfTag, 1);
+
+    // remove this file from deleted tag
+    let tag = dirsData[dirName].tags[tagName];
+    const indexOfFile = tag.files.indexOf(fileName);
+    tag.files.splice(indexOfFile, 1);
+
+    // if there are no other files that have this tag, remove it from directory
+    if(tag.files.length === 0) {
+        delete dirsData[dirName].tags[tagName];
+    }
+
+    try {
+        const temp = path.join(process.cwd(), 'data/directory.json');
+        fs.writeFileSync(temp, JSON.stringify(dirsData));
+        res.json({success: true});
+    }catch(err) {
+        console.log(err);
+        res.json({success: false});
+    }
+};
+
 module.exports = {
     searchDirectory,
     getDirectory,
     addDirectory,
     updateDirectoryFiles,
-    updateDirectoryTags
+    updateDirectoryTags,
+    deleteDirectoryTags
 };

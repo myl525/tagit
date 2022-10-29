@@ -175,6 +175,11 @@ body {
     gap: 8px;
 }
 
+.tag_wrapper {
+    position: relative;
+    width: fit-content;
+}
+
 .tag {
     font-size: 14px;
     background-color: #F1F2F3;
@@ -183,6 +188,20 @@ body {
     border-radius: 8px;
     outline: none;
     border: none;
+}
+
+.delete_tag {
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    color: red;
+    font-size: 10px;
+    z-index: 1;
+}
+
+.delete_tag:hover {
+    cursor:pointer;
+    opacity: 0.5;
 }
 
 .add_tag {

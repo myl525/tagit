@@ -8,16 +8,27 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "pkg": {
-    "assets": ["src/views/*", "src/public/stylesheets/*", "data/*"],
-    "scripts": ["src/controllers/*.js", "src/public/javascripts/*.js", "src/routes/*.js"],
-    "targets": ["node14-win-x64"],
+    "assets": [
+      "src/views/*",
+      "src/public/stylesheets/*",
+      "data/*"
+    ],
+    "scripts": [
+      "src/controllers/*.js",
+      "src/public/javascripts/*.js",
+      "src/routes/*.js"
+    ],
+    "targets": [
+      "node14-win-x64"
+    ],
     "outputPath": "../../dist"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "hbs": "^4.2.0"
+    "hbs": "^4.2.0",
+    "open": "^8.4.0"
   },
   "devDependencies": {
     "eslint": "^8.26.0",

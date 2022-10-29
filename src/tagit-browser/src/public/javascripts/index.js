@@ -126,6 +126,17 @@ const getDir = async function() {
     displayAllFileCards(Object.keys(dataFiles));
 };
 
+// delete files' tags
+const deleteTag = async function(fileName, tagName) {
+    const res = await fetch('../api/deleteDirTags', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'dirName='+encodeURIComponent(localDir.name)+'&fileName='+encodeURIComponent(fileName)+'&tagName='+encodeURIComponent(tagName)
+    });
+};
+
 
 /** DOM manipulations */
 // clear all tags
@@ -166,27 +177,39 @@ const clearCards = function() {
 const createFileCard = function(fileName, tags) {
     const card = document.createElement('div');
     card.className = 'card';
+
     const file = document.createElement('div');
     file.className = 'file';
+
     const cardFileName = document.createElement('span');
     cardFileName.className = 'file_name';
     cardFileName.textContent = fileName;
     cardFileName.addEventListener('click', onClickFileName);
+
     const cardTags = document.createElement('div');
     cardTags.className = 'file_tags';
     const tagArr = tags.map((ele) => {
+        const tagWrapper = document.createElement('div');
+        tagWrapper.className = 'tag_wrapper';
         const tag = document.createElement('button');
         tag.className = 'tag';
         tag.textContent = ele;
         tag.addEventListener('click', onClickTag);
-        return tag;
+        const deleteTagBtn = document.createElement('iconify-icon');
+        deleteTagBtn.className = 'delete_tag';
+        deleteTagBtn.icon = 'ep:remove-filled';
+        deleteTagBtn.addEventListener('click', onClickDeleteTagBtn);
+        tagWrapper.append(tag, deleteTagBtn);
+        return tagWrapper;
     });    
+
     const addTagBtn = document.createElement('button');
     addTagBtn.className = 'add_tag';
     addTagBtn.textContent = '+';
     addTagBtn.id = fileName;
     addTagBtn.addEventListener('click', onClickAddTagButton);
     tagArr.push(addTagBtn);
+
     file.appendChild(cardFileName);
     cardTags.append(...tagArr);
     card.append(file, cardTags);
@@ -250,4 +273,13 @@ const onClickAddTagButton = async function(evt) {
             getDir();
         }
     }
+};
+
+
+// handle click delete tag button
+const onClickDeleteTagBtn = async function(evt) {
+    const fileName = evt.target.parentNode.parentNode.lastChild.id;
+    const tagName = evt.target.parentNode.firstChild.textContent;
+    deleteTag(fileName, tagName);
+    getDir();
 };
