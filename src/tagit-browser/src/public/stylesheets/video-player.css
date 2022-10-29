@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+}
+
+.video-title {
+    margin: 12px 10%;
+    font-size: 22px;
+}
+
+.video-container {
+    margin-left: 10%;
+    border: solid lightgray 0.5px;
+    width: 80%;
+    height: 75%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+}
+
+video {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+}

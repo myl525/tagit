@@ -14,7 +14,12 @@ app.set('view engine', 'hbs');
 
 // routes
 const index = require('./src/routes/index.js');
+const videoPlayer = require('./src/routes/video-player.js');
 
 app.use('/', index);
+app.use('/', videoPlayer);
 
-app.listen(5000);
+app.listen(5000, () => {
+    console.log('Listening on port 5000');
+});
+
