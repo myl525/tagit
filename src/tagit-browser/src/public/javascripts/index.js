@@ -71,7 +71,9 @@ const preprocess = async function() {
             return !prevFiles.includes(currFile);
         });
 
-        updateDirFiles(newFiles);
+        if(newFiles.length > 0) {
+            addDirFiles(newFiles);
+        }
     }
 };
 
@@ -92,8 +94,8 @@ const addDir = async function() {
 };
 
 // update directory files
-const updateDirFiles = async function(newFiles) {
-    const res = await fetch('../api/updateDirFiles', {
+const addDirFiles = async function(newFiles) {
+    const res = await fetch('../api/addDirFiles', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -103,9 +105,9 @@ const updateDirFiles = async function(newFiles) {
 };
 
 // update directory tags
-const updateDirTags = async function(fileName, newTag) {
+const addDirTags = async function(fileName, newTag) {
     // send to the database
-    const res = await fetch('../api/updateDirTags', {
+    const res = await fetch('../api/addDirTags', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -117,6 +119,7 @@ const updateDirTags = async function(fileName, newTag) {
 // get directory
 const getDir = async function() {
     const dirName = encodeURIComponent(localDir.name);
+    
     const url = `../api/getDir?dirName=${dirName}`;
     const res = await fetch(url);
     const resData = await res.json();
@@ -127,7 +130,7 @@ const getDir = async function() {
 };
 
 // delete files' tags
-const deleteTag = async function(fileName, tagName) {
+const deleteDirTags = async function(fileName, tagName) {
     const res = await fetch('../api/deleteDirTags', {
         method: 'POST',
         headers: {
@@ -256,7 +259,7 @@ const onClickTag = function(evt) {
 };
 
 // handle click file name
-const onClickFileName = function(evt) {
+const onClickFileName = async function(evt) {
     const file = localFiles[evt.target.textContent];
     const URL = window.URL || window.webkitURL; 
     const fileURL = URL.createObjectURL(file);
@@ -269,17 +272,16 @@ const onClickAddTagButton = async function(evt) {
     let newTag = prompt('Enter your tag: ');
     if(newTag) {
         if(!dataFiles[fileName].tags.includes(newTag)) {
-            updateDirTags(fileName, newTag);
+            addDirTags(fileName, newTag);
             getDir();
         }
     }
 };
 
-
 // handle click delete tag button
 const onClickDeleteTagBtn = async function(evt) {
     const fileName = evt.target.parentNode.parentNode.lastChild.id;
     const tagName = evt.target.parentNode.firstChild.textContent;
-    deleteTag(fileName, tagName);
+    deleteDirTags(fileName, tagName);
     getDir();
 };

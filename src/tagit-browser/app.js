@@ -20,8 +20,5 @@ const videoPlayer = require('./src/routes/video-player.js');
 app.use('/', index);
 app.use('/', videoPlayer);
 
-app.listen(5000, async () => {
-    console.log('Listening on port 5000');
-    await open('http://localhost:5000/');
-});
+module.exports = app;
 

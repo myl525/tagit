@@ -17,10 +17,10 @@ const searchDirectory = async (req, res) => {
 // get directory 
 const getDirectory = async (req, res) => {
     const dirName = req.query.dirName;
-    
+
     const files = dirsData[dirName].files;
     const tags = dirsData[dirName].tags;
-
+    
     res.json({files, tags});
 };
 
@@ -47,11 +47,12 @@ const addDirectory = async (req, res) => {
         res.json({success: true});
     }catch(err) {
         console.log(err);
+        res.json({success: false});
     }
 };
 
 // update directory (new files detected)
-const updateDirectoryFiles = async (req, res) => {
+const addDirectoryFiles = async (req, res) => {
     const dirName = req.body.dirName;
     const newFiles = JSON.parse(req.body.newFiles);
 
@@ -72,7 +73,7 @@ const updateDirectoryFiles = async (req, res) => {
 };
 
 // update tags (client add new tags for file)
-const updateDirectoryTags = async (req, res) => {
+const addDirectoryTags = async (req, res) => {
     const dirName = req.body.dirName;
     const fileName = req.body.fileName;
     const tagName = req.body.tagName;
@@ -130,11 +131,12 @@ const deleteDirectoryTags = async (req, res) => {
     }
 };
 
+
 module.exports = {
     searchDirectory,
     getDirectory,
     addDirectory,
-    updateDirectoryFiles,
-    updateDirectoryTags,
+    addDirectoryFiles,
+    addDirectoryTags,
     deleteDirectoryTags
 };
