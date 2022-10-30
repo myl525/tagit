@@ -2,10 +2,16 @@
 
 <div class="header">
     <button class="home_btn" id="homeBtn" disabled="true">tagit</button>
-    <button class="select_dir_btn" id="selectDirBtn">
-        <iconify-icon inline icon="bx:upload"></iconify-icon>
-        Choose a Directory
-    </button>
+    <div>
+        <button class="select_dir_btn" id="recentDirBtn">
+            <iconify-icon inline icon="clarity:directory-line"></iconify-icon>
+            Use Last Directory
+        </button>
+        <button class="select_dir_btn" id="selectDirBtn">
+            <iconify-icon inline icon="bx:upload"></iconify-icon>
+            Choose a Directory
+        </button>
+    </div>
 </div>
 
 <div class="search_bar_container">
@@ -25,7 +31,7 @@
 
 <div id="cardsResultsArea" class="results_area">
     <div id="cards" class="cards">
-        <div class="card">
+        {{!-- <div class="card">
             <div class="file">
                 <span class="file_name">Sample File.mp4</span>
             </div>
@@ -43,10 +49,10 @@
                 <iconify-icon icon="ep:remove-filled" class="delete_tag"></iconify-icon>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 
 
 <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
-<script src="javascripts/index.js"></script>
+<script type="module" src="javascripts/index.js"></script>

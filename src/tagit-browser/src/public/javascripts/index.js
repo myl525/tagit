@@ -1,5 +1,5 @@
+import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
 document.addEventListener('DOMContentLoaded', main);
-
 // global variable
 let localDir = undefined;
 let localFiles = undefined;
@@ -7,7 +7,15 @@ let dataFiles = undefined;
 let dataTags = undefined;
 
 // main function
-function main(evt) {
+async function main(evt) {
+    // check if there is stored directory (last directory)
+    const recentDirBtn = document.getElementById('recentDirBtn');
+    if(!await get('directory')) {
+        recentDirBtn.style.visibility = 'hidden';
+    }
+    // use recent directory
+    
+    recentDirBtn.addEventListener('click', onClickRecentDirBtn);
 	// select local directory
 	const directorySelector = document.getElementById('selectDirBtn');
     directorySelector.addEventListener('click', onDirectorySelector);
@@ -20,16 +28,50 @@ function main(evt) {
 }
 
 /** functions related to manipulate directory and files */
+async function verifyPermission(fileHandle, readWrite) {
+    const options = {};
+    if (readWrite) {
+      options.mode = 'readwrite';
+    }
+    // Check if permission was already granted. If so, return true.
+    if ((await fileHandle.queryPermission(options)) === 'granted') {
+      return true;
+    }
+    // Request permission. If the user grants permission, return true.
+    if ((await fileHandle.requestPermission(options)) === 'granted') {
+      return true;
+    }
+    // The user didn't grant permission, so return false.
+    return false;
+}
+
+const start = async () => {
+    await getLocalFiles();
+    await preprocess();
+    await getDir();
+    document.getElementById('homeBtn').disabled = false;
+    document.getElementById('searchInput').disabled = false;
+    document.getElementById('searchBtn').disabled = false;
+};
+
+// when user click use recent directory button
+const onClickRecentDirBtn = async function(evt) {
+    localDir = await get('directory');
+    if(localDir) {
+        const permission = await(verifyPermission(localDir));
+        if(permission) {
+            start();
+        }
+    }
+}
+
 // when user click directory selector
 const onDirectorySelector = async function(evt) {
     localDir = await showDirectoryPicker();
+    
     if(localDir) {
-        await getLocalFiles();
-        await preprocess();
-        await getDir();
-        document.getElementById('homeBtn').disabled = false;
-        document.getElementById('searchInput').disabled = false;
-        document.getElementById('searchBtn').disabled = false;
+        await set('directory', localDir);
+        start();
     }
 };
 
