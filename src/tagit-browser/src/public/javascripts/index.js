@@ -5,6 +5,8 @@ let localDir = undefined;
 let localFiles = undefined;
 let dataFiles = undefined;
 let dataTags = undefined;
+let tagFilter = [];
+let filesFiltered = [];
 
 // main function
 async function main(evt) {
@@ -14,7 +16,6 @@ async function main(evt) {
         recentDirBtn.style.visibility = 'hidden';
     }
     // use recent directory
-    
     recentDirBtn.addEventListener('click', onClickRecentDirBtn);
 	// select local directory
 	const directorySelector = document.getElementById('selectDirBtn');
@@ -281,14 +282,19 @@ const onClickHomeBtn = async function(evt) {
     if(localDir) {
        await getDir(); 
     }
+    clearSearchInput();
+    tagFilter = [];
+    filesFiltered = [];
 };
 
 // handle click search button
 const onClickSearchBtn = async function(evt) {
     const searchInput = document.getElementById('searchInput');
     if(searchInput.value) {
-        const tagName = searchInput.value;
-        const filtered = dataTags[tagName].files;
+        const keyWord = searchInput.value;
+        const filtered = Object.keys(dataFiles).filter((file) => {
+            return file.includes(keyWord);
+        })
         displayAllFileCards(filtered);
     }
 };
@@ -296,8 +302,39 @@ const onClickSearchBtn = async function(evt) {
 // handle click tag
 const onClickTag = function(evt) {
     const tagName = evt.target.textContent;
-    const filtered = dataTags[tagName].files;
-    displayAllFileCards(filtered);
+    if(evt.target.parentNode.className = 'tags') {
+        if(evt.target.style.color === 'white') {
+            // remove filter
+            evt.target.style.background = '#F1F2F3';
+            evt.target.style.color = '#61666D';
+            const indexOfTag = tagFilter.indexOf(tagName);
+            tagFilter.splice(indexOfTag, 1);
+        } else {
+            // add filter
+            evt.target.style.background = '#00AEEC';
+            evt.target.style.color = 'white';
+            tagFilter.push(tagName);
+        }
+        if(tagFilter.length === 0) {
+            filesFiltered = Object.keys(dataFiles);
+        }else {
+            for(let i=0; i<tagFilter.length; i++) {
+                let filter = tagFilter[i];
+                if(i < 1) {
+                    filesFiltered = dataTags[filter].files;
+                }else {
+                    let tempFiles = dataTags[filter].files;
+                    filesFiltered = intersection(filesFiltered, tempFiles);
+                }
+                if(filesFiltered.length === 0) {
+                    break;
+                }
+            }
+        }
+    }else {
+        filesFiltered = dataTags[tagName].files;
+    }
+    displayAllFileCards(filesFiltered);
 };
 
 // handle click file name
@@ -318,6 +355,7 @@ const onClickAddTagButton = async function(evt) {
             getDir();
         }
     }
+    clearSearchInput();
 };
 
 // handle click delete tag button
@@ -326,4 +364,19 @@ const onClickDeleteTagBtn = async function(evt) {
     const tagName = evt.target.parentNode.firstChild.textContent;
     deleteDirTags(fileName, tagName);
     getDir();
+};
+
+// clear search input
+const clearSearchInput = function() {
+    const searchInput = document.getElementById('searchInput');
+    if(searchInput.value) {
+        searchInput.value = '';
+    }
+};
+
+
+// find intersection between two arrays
+const intersection = function(arr1, arr2) {
+    const filtered = arr1.filter(ele => arr2.includes(ele));
+    return filtered;
 };
