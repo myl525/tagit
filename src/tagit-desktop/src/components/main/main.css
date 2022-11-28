@@ -1,8 +1,4 @@
-* {
-    box-sizing: border-box;
-}
-
-.home_btn {
+.home-btn {
     background-color: transparent;
     text-transform: uppercase;
     font-family: 'Courier New', Courier, monospace;
@@ -13,7 +9,7 @@
     color: #FB7299;
 }
 
-.search_bar {
+.search-bar {
     background-color: #F6F7F8;
     border: lightgray solid 1px;
     border-radius: 4px;
@@ -25,67 +21,45 @@
     transition: all 0.3s;
 }
 
-.search_bar:hover {
+.search-bar:hover {
     background-color: #e4e4e6;
     transition: all 0.3s;
 }
 
-.search_bar:focus-within {
+.search-bar:focus-within {
     background-color: white;
     border: solid #FB7299 1px;
     transition: all 0.3s;
 }
 
-.search_input {
+.search-input {
     background-color: transparent;
     outline: none;
     border: none;
     width: 95%;
 }
 
-.search_btn {
+.search-btn {
     transition: all 0.3s;
 }
 
-.search_btn:hover {
+.search-btn:hover {
     opacity: 0.6;
     cursor: pointer;
     transition: all 0.3s;
 }
 
-hr {
-    margin-top: 0;
-}
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    min-height: 100vh !important;
-    background-color: #F6F7F8;
-    min-width: 70px;
-    padding: 30px 0; 
-    justify-content: space-between;
+.main {
+    display: flex;
     flex-direction: column;
+    flex-grow: 1;
+}
+
+.files {
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 16px 0;
-}
-
-.select_dir_btn {
-    color: #FB7299;
-    font-weight: bold;
-}
-
-.select_dir_btn:hover {
-    cursor: pointer;
-}
-
-.night_mode_icon {
-    transition: all 0.3s;
-}
-
-.night_mode_icon:hover {
-    cursor: pointer;
-    color: #FB7299;
+    justify-content: space-between;
+    gap: 16px;
 }

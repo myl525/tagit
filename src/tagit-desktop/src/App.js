@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import bootstrap elements
-import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import components
-import TopNav from './components/nav/nav';
+import Sides from './components/sides/sides';
+import Main from './components/main/main';
 
 const App = () => {
+    const [files, setFiles] = useState([]);
+
+    const openDir = async () => {
+        let data =await window.navAPIs.openDir();
+        setFiles(data);
+    }
+
     return(
-        <TopNav />
+        <>
+            <Sides openDir={() => openDir()} />
+            <Main files={files} />
+        </>
     );
 }
 

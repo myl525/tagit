@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+.side-menu {
+    min-height: 100vh !important;
+    background-color: #F6F7F8;
+    min-width: 70px;
+    padding: 30px 0; 
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.select-dir-btn {
+    color: #FB7299;
+    font-weight: bold;
+}
+
+.select-dir-btn:hover {
+    cursor: pointer;
+}
+
+.night-mode-icon {
+    transition: all 0.3s;
+}
+
+.night-mode-icon:hover {
+    cursor: pointer;
+    color: #FB7299;
+}
+
+.sides {
+    display: flex;
+}

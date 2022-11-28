@@ -1,0 +1,43 @@
+.file-card {
+    box-shadow: 0 0 4px lightgrey;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .file-cover {
+    background: lightgrey;
+    padding: 24px;
+    text-align: center;
+  }
+  
+  .file-info {
+    padding: 10px 12px;
+  }
+  
+  .file-info-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .file-info-tag {
+    font-size: 14px;
+    background-color: #F1F2F3;
+    color: #61666D;
+    padding: 2px 12px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+  }
+
+.file-info-name {
+    font-weight: bold;
+    transition: color 0.25s;
+}
+
+.file-info-name:hover {
+    color: #FB7299;
+    cursor: pointer;
+    transition: color 0.25s;
+}
