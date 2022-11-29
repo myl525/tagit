@@ -15,7 +15,7 @@ const SideMenu = (props) => {
     )
 }
 
-const SideTagsArea = () => {
+const SideTagsArea = (props) => {
     return(
         <div className='side-tags-area'>
 
@@ -27,7 +27,7 @@ const Sides = (props) => {
     return(
         <div className='sides'>
             <SideMenu openDir={props.openDir} />
-            <SideTagsArea />
+            <SideTagsArea tags={props.tags} />
         </div>
     )
 }

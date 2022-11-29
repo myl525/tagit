@@ -1,11 +1,14 @@
 import React from "react";
 import './file.css';
+import { FileTag } from "../tags/tags";
+
 import { FileEarmarkPlay } from "react-bootstrap-icons";
 import { FileEarmarkMusic } from "react-bootstrap-icons";
 import { FileEarmarkImage } from "react-bootstrap-icons";
 import { FileEarmark } from "react-bootstrap-icons";
+import { Plus } from "react-bootstrap-icons";
 
-const FileCover = (props) => {
+const FileIcon = (props) => {
     const fileExtension = props.ext;
     const videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'mkv'];
     const audioExtensions = ['mp3', 'flac', 'aac', 'alac'];
@@ -13,46 +16,47 @@ const FileCover = (props) => {
 
     if(videoExtensions.includes(fileExtension)) {
         return(
-            <div className="file-cover">
-                <FileEarmarkPlay size={24}/>
-            </div> 
+            <FileEarmarkPlay className="file-info-icon" /> 
         )
     }else if(audioExtensions.includes(fileExtension)) {
         return(
-            <div className="file-cover">
-                <FileEarmarkMusic />
-            </div> 
+            <FileEarmarkMusic className="file-info-icon" />
         )
     }else if(imageExtensions.includes(fileExtension)) {
         return(
-            <div className="file-cover">
-                <FileEarmarkImage />
-            </div> 
+            <FileEarmarkImage className="file-info-icon" />
         )
     }else {
         return(
-            <div className="file-cover">
-                <FileEarmark size={24} />
-            </div> 
+            <FileEarmark className="file-" />
         )
     }
+}
+
+const FileTags = (props) => {
+    const listOfFileTags = props.file.fileTags.map((fileTag) =>
+        <FileTag key={fileTag} tag={fileTag} type='file' />
+    )
+
+    return(
+        <div className="file-tags">
+            {listOfFileTags}
+            <Plus className="open-addFileTagModal-btn" onClick={props.handleShowModal} id={props.file.id} />
+        </div>
+    )
 }
 
 const File = (props) => {
     const file = props.file;
     return(
         <div className="file-card">
-            <FileCover ext={file.ext} />
             <div className="file-info">
-                <div className="file-info-tags">
-                    <span className="file-info-tag">tag1</span>
-                    <span className="file-info-tag">tag2</span>
-                    <span className="file-info-tag">tag3</span>
-                </div>
-                <div className="file-info-name">
-                    <span>{file.name}</span>
-                </div>
+                <FileIcon ext={file.ext} />
+                <span className="file-info-name">
+                    {file.name}
+                </span>
             </div>
+            <FileTags handleShowModal={props.handleShowModal} file={file} />
         </div>
     )
 }

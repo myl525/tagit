@@ -1,3 +1,15 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 70px;
+}
+
+.top-navbar {
+    justify-content: space-between;
+    padding: 8px 24px;
+}
+
 .home-btn {
     background-color: transparent;
     text-transform: uppercase;
@@ -49,18 +61,11 @@
     transition: all 0.3s;
 }
 
-.main {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
 .files {
     padding: 24px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    justify-content: flex-start;
     gap: 16px;
 }

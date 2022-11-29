@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './main.css'
 // import components
 import File from '../File/file';
+import { AddTagModal } from '../Modals/modals';
 // import bootstrap elements
-import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar';
 import { Search } from 'react-bootstrap-icons';
 
@@ -19,20 +19,18 @@ const SearchBar = () => {
 
 const TopNavBar = () => {
     return(
-        <Navbar>
-            <Container className="container">
-                <button className='home-btn'>tagit</button>
-                <SearchBar />
-            </Container>
+        <Navbar className='top-navbar'>
+            <button className='home-btn'>tagit</button>
+            <SearchBar />
         </Navbar>
     )
 }
 
 // Files
 const Files = (props) => {
-    const files = props.files;
-    const listOfFiles = Object.keys(files).map(
-        (fileName) => <File key={fileName} file={files[fileName]} />
+    const filesObj = props.files;
+    const listOfFiles = Object.keys(filesObj).map(
+        (fileId) => <File key={fileId} file={filesObj[fileId]} handleShowModal={props.handleShowModal} />
     )
     return(
         <div className='files'>
@@ -42,10 +40,24 @@ const Files = (props) => {
 }
 
 const Main = (props) => {
+    const [show, setShow] = useState(false);
+    const [currentFile, setCurrentFile] = useState({});
+    const handleShowModal = (evt) => {
+        setShow(true);
+        setCurrentFile({
+            ...props.files[evt.target.id]
+        });
+    }
+
+    const handleCloseModal = () => {
+        setShow(false);
+    }
+
     return(
         <div className='main'>
+            <AddTagModal show={show} handleShowModal={handleShowModal} handleCloseModal={handleCloseModal} addFileTag={props.addFileTag} currentFile={currentFile} />
             <TopNavBar />
-            <Files files = {props.files}/>
+            <Files files = {props.files} handleShowModal={handleShowModal} />
         </div>
     )
 }

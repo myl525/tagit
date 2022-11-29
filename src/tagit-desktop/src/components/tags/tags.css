@@ -1,0 +1,36 @@
+.file-tag-wrapper {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin: 2px 4px;
+}
+
+.file-tag-wrapper:hover > .file-tag-delete-btn {
+    visibility: visible;
+}
+
+.file-tag {
+    font-size: 14px;
+    background-color: #F1F2F3;
+    color: #61666D;
+    padding: 4px 12px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    text-align: center;
+}
+
+.file-tag-delete-btn {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    color: red;
+    z-index: 1;
+    visibility: hidden;
+}
+
+.file-tag-delete-btn:hover {
+    cursor:pointer;
+    opacity: 0.5;
+}

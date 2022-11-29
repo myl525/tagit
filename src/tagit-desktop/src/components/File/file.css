@@ -1,41 +1,50 @@
 .file-card {
+    padding: 12px;
     box-shadow: 0 0 4px lightgrey;
-    width: 220px;
+    width: 240px;
+    height: 176px;
     display: flex;
     flex-direction: column;
-}
-  
-.file-cover {
-    background: lightgrey;
-    padding: 24px;
-    text-align: center;
-}
-  
-.file-info {
-    padding: 12px;
+    overflow: scroll;
 }
 
-.file-info-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-}
-
-.file-info-tag {
+.open-addFileTagModal-btn {
     font-size: 14px;
+    width: 24px;
+    height: 24px;
     background-color: #F1F2F3;
     color: #61666D;
-    padding: 2px 12px;
-    border-radius: 8px;
+    border-radius: 50%;
     outline: none;
     border: none;
+    text-align: center;
+    transition: all 0.25s;
+    margin: 2px 4px;
+}
+.open-addFileTagModal-btn:hover {
+    cursor: pointer;
+    opacity: 0.75;
+    transform: translateY(-2px);
+    transition: all 0.25s;
+    background-color: #FB7299;
+    color: white;
+}
+
+.file-info {
+    margin: 0 4px;
+    font-size: 18px;
+}
+
+.file-info-icon {
+    vertical-align: middle;
 }
 
 .file-info-name {
-    margin-top: 8px;
     font-weight: bold;
     transition: color 0.25s;
     word-break: break-all;
+    vertical-align: middle;
+    margin-left: 2px;
 }
 
 .file-info-name:hover {

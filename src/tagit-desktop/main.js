@@ -23,6 +23,7 @@ function createWindow () {
 
 app.whenReady().then(() => {
     ipcMain.handle('dialog: openDir', MainController.handleDirOpen);
+    ipcMain.on('add-file-tag', MainController.handleAddFileTag);
     createWindow();
 })
 

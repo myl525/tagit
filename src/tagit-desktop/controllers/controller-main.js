@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 // import files
 const dirsData = require('../data/data.json');
+let currentDir = '';
 
 /** help functions */
 // browse directory
@@ -15,17 +16,13 @@ function readFilesSync(dir) {
         const filepath = path.resolve(dir, filename);
         const stat = fs.statSync(filepath);
         const isFile = stat.isFile();
-  
+        const id = path.basename(dir) + '/' + name;
+
         if(ext){ //file
-            files.push({ filepath, name, ext});
+            files.push({ id, filepath, name, ext });
         }else if(!isFile){ //directory
             let tempFiles = [];
             tempFiles = readFilesSync(filepath);
-            const dirName = path.basename(filepath);
-            for(let i=0; i<tempFiles.length; i++) {
-                tempFiles[i].name = dirName + '/' + tempFiles[i].name;
-            }
-
             files.push(...tempFiles);
         }
     });
@@ -43,14 +40,16 @@ async function handleDirOpen() {
         return;
     }else {
         const dirName = path.basename(filePaths[0]);
+        currentDir = dirName;
         const files = readFilesSync(filePaths[0]);
         if(dirsData[dirName]) {
             // check whether there is new file
             const dirFiles = dirsData[dirName].files;
             files.forEach((file) => {
-                if(!dirFiles[file.name]) {
+                if(!dirFiles[file.id]) {
                     // create new file entry
-                    dirFiles[file.name] = {
+                    dirFiles[file.id] = {
+                        id: file.id,
                         filepath: file.filepath,
                         name: file.name,
                         ext: file.ext,
@@ -66,7 +65,8 @@ async function handleDirOpen() {
                 tags: {}
             };
             files.forEach((file) => {
-                obj.files[file.name] = {
+                obj.files[file.id] = {
+                    id: file.id,
                     filepath: file.filepath,
                     name: file.name,
                     ext: file.ext,
@@ -80,7 +80,24 @@ async function handleDirOpen() {
     }
 }
 
+const handleAddFileTag = (event, obj) => {
+    const fileId = obj.fileId;
+    const newTag = obj.newTag;
+    const dirFiles = dirsData[currentDir].files;
+    const dirTags = dirsData[currentDir].tags;
+
+    dirFiles[fileId].fileTags.push(newTag);
+    if(dirTags[newTag]) {
+        dirTags[newTag].push(fileId);
+    }else {
+        dirTags[newTag] = [fileId];
+    }
+
+    fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
+}
+
 module.exports = {
     handleDirOpen: handleDirOpen,
+    handleAddFileTag: handleAddFileTag,
 }
 

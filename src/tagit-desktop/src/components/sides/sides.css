@@ -3,6 +3,7 @@
 }
 
 .side-menu {
+    position: fixed;
     min-height: 100vh !important;
     background-color: #F6F7F8;
     min-width: 70px;
