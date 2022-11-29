@@ -3,25 +3,25 @@
     width: 220px;
     display: flex;
     flex-direction: column;
-  }
+}
   
-  .file-cover {
+.file-cover {
     background: lightgrey;
     padding: 24px;
     text-align: center;
-  }
+}
   
-  .file-info {
-    padding: 10px 12px;
-  }
-  
-  .file-info-tags {
+.file-info {
+    padding: 12px;
+}
+
+.file-info-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-  }
-  
-  .file-info-tag {
+}
+
+.file-info-tag {
     font-size: 14px;
     background-color: #F1F2F3;
     color: #61666D;
@@ -29,11 +29,13 @@
     border-radius: 8px;
     outline: none;
     border: none;
-  }
+}
 
 .file-info-name {
+    margin-top: 8px;
     font-weight: bold;
     transition: color 0.25s;
+    word-break: break-all;
 }
 
 .file-info-name:hover {

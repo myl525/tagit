@@ -6,11 +6,14 @@ import Sides from './components/sides/sides';
 import Main from './components/main/main';
 
 const App = () => {
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState({});
+    const [tags, setTags] = useState({});
 
     const openDir = async () => {
-        let data =await window.navAPIs.openDir();
-        setFiles(data);
+        let data = await window.navAPIs.openDir();
+        setFiles(data.files);
+        setTags(data.tags);
+        console.log(data);
     }
 
     return(

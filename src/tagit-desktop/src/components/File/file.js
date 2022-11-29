@@ -39,9 +39,10 @@ const FileCover = (props) => {
 }
 
 const File = (props) => {
+    const file = props.file;
     return(
         <div className="file-card">
-            <FileCover ext={props.file.ext} />
+            <FileCover ext={file.ext} />
             <div className="file-info">
                 <div className="file-info-tags">
                     <span className="file-info-tag">tag1</span>
@@ -49,7 +50,7 @@ const File = (props) => {
                     <span className="file-info-tag">tag3</span>
                 </div>
                 <div className="file-info-name">
-                    <span>{props.file.name}</span>
+                    <span>{file.name}</span>
                 </div>
             </div>
         </div>

@@ -30,11 +30,13 @@ const TopNavBar = () => {
 
 // Files
 const Files = (props) => {
-    const files = props.files.map((file) => <File key={file.name} file={file} />)
-
+    const files = props.files;
+    const listOfFiles = Object.keys(files).map(
+        (fileName) => <File key={fileName} file={files[fileName]} />
+    )
     return(
         <div className='files'>
-            {files}
+            {listOfFiles}
         </div>
     )
 }

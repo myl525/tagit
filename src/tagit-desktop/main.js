@@ -2,42 +2,7 @@ const { app, BrowserWindow, shell, dialog, ipcMain } = require('electron')
 const path = require('path');
 const fs = require('fs');
 
-/** functions */
-
-// browse directory
-function readFilesSync(dir) {
-  const files = [];
-
-  fs.readdirSync(dir).forEach(filename => {
-    const name = path.parse(filename).name;
-    const ext = path.parse(filename).ext;
-    const filepath = path.resolve(dir, filename);
-    const stat = fs.statSync(filepath);
-    const isFile = stat.isFile();
-
-    if(ext){ //file
-      files.push({ filepath, name, ext});
-    }else if(!isFile){ //directory
-      let tempFiles = [];
-      tempFiles = readFilesSync(filepath);
-      files.push(...tempFiles);
-    }
-  });
-
-  return files;
-}
-
-async function handleDirOpen() {
-  const { canceled, filePaths } = await dialog.showOpenDialog(
-    {properties: ['openDirectory']}
-  )
-  if(canceled) {
-    return;
-  }else {
-    const files = readFilesSync(filePaths[0]);
-    return files;
-  }
-}
+const MainController = require('./controllers/controller-main.js');
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -56,12 +21,10 @@ function createWindow () {
   win.webContents.openDevTools()
 }
 
-
 app.whenReady().then(() => {
-    ipcMain.handle('dialog: openDir', handleDirOpen);
+    ipcMain.handle('dialog: openDir', MainController.handleDirOpen);
     createWindow();
 })
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
