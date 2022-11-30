@@ -8,20 +8,30 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Search } from 'react-bootstrap-icons';
 
 // main-top
-const SearchBar = () => {
+const SearchBar = (props) => {
+    const [inputVal, setInputVal] = useState('');
+    const handleInputChange = (evt) => {
+        setInputVal(evt.target.value);
+    }
+    const handleClickSearchBtn = (evt) => {
+        if(inputVal) {
+            props.searchByFileName(inputVal);
+        }
+    }
+
     return(
         <div className='search-bar'>
-            <input type="text" className='search-input' placeholder='Filename' />
-            <Search size={18}  className='search-btn' />
+            <input type="text" className='search-input' placeholder='Filename' value={inputVal} onChange={handleInputChange} />
+            <Search size={18}  className='search-btn' onClick={handleClickSearchBtn} />
         </div>
     )
 }
 
-const TopNavBar = () => {
+const TopNavBar = (props) => {
     return(
         <Navbar className='top-navbar'>
-            <button className='home-btn'>tagit</button>
-            <SearchBar />
+            <button className='home-btn' onClick={props.reset} >tagit</button>
+            <SearchBar searchByFileName={props.searchByFileName} />
         </Navbar>
     )
 }
@@ -30,7 +40,7 @@ const TopNavBar = () => {
 const Files = (props) => {
     const filesObj = props.files;
     const listOfFiles = Object.keys(filesObj).map(
-        (fileId) => <File key={fileId} file={filesObj[fileId]} handleShowModal={props.handleShowModal} />
+        (fileId) => <File key={fileId} file={filesObj[fileId]} handleShowModal={props.handleShowModal} deleteFileTag={props.deleteFileTag} />
     )
     return(
         <div className='files'>
@@ -40,7 +50,9 @@ const Files = (props) => {
 }
 
 const Main = (props) => {
-    const [show, setShow] = useState(false);
+    // state of modal
+    const [show, setShow] = useState(false); 
+    // selected file (add its tag, delete its tag)
     const [currentFile, setCurrentFile] = useState({});
     const handleShowModal = (evt) => {
         setShow(true);
@@ -51,13 +63,14 @@ const Main = (props) => {
 
     const handleCloseModal = () => {
         setShow(false);
+        setCurrentFile({});
     }
 
     return(
         <div className='main'>
-            <AddTagModal show={show} handleShowModal={handleShowModal} handleCloseModal={handleCloseModal} addFileTag={props.addFileTag} currentFile={currentFile} />
-            <TopNavBar />
-            <Files files = {props.files} handleShowModal={handleShowModal} />
+            <AddTagModal show={show} handleCloseModal={handleCloseModal} addFileTag={props.addFileTag} currentFile={currentFile} />
+            <TopNavBar searchByFileName={props.searchByFileName} reset={props.reset} />
+            <Files files = {props.files} handleShowModal={handleShowModal} deleteFileTag={props.deleteFileTag} />
         </div>
     )
 }

@@ -80,7 +80,14 @@ async function handleDirOpen() {
     }
 }
 
+// reset
+const handleReset = () => {
+    return dirsData[currentDir];
+}
+
+// add file tag
 const handleAddFileTag = (event, obj) => {
+    const files = obj.files;
     const fileId = obj.fileId;
     const newTag = obj.newTag;
     const dirFiles = dirsData[currentDir].files;
@@ -94,10 +101,111 @@ const handleAddFileTag = (event, obj) => {
     }
 
     fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
+
+    let retFiles = {};
+    files.forEach((file) => {
+        retFiles[file] = {
+            ...dirFiles[file]
+        };
+    })
+
+    return {files: retFiles, tags: dirTags};
 }
+
+// delete file tag
+const handleDeleteFileTag = (event, obj) => {
+    const files = obj.files;
+    const fileId = obj.fileId;
+    const tagName = obj.tag;
+    const dirFiles = dirsData[currentDir].files;
+    const dirTags = dirsData[currentDir].tags;
+
+    // remove this tag from selected file
+    let file = dirFiles[fileId];
+    const indexOfTag = file.fileTags.indexOf(tagName);
+    file.fileTags.splice(indexOfTag, 1);
+    // remove this file from deleted tag
+    let tag = dirTags[tagName];
+    const indexOfFile = tag.indexOf(fileId);
+    tag.splice(indexOfFile, 1);
+    // if there are no other files that have this tag, remove it from directory
+    if(tag.length === 0) {
+        delete dirTags[tagName];
+    }
+
+    fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
+    
+    let retFiles = {};
+    files.forEach((file) => {
+        retFiles[file] = {
+            ...dirFiles[file]
+        };
+    })
+
+    return {files: retFiles, tags: dirTags};
+}
+
+// search by file name
+const handleSearchByFileName = (event, fileName) => {
+    const dirFiles = dirsData[currentDir].files;
+    let filtered = {};
+
+    for(key in dirFiles) {
+        if(dirFiles[key].name.includes(fileName)) {
+            filtered[key] = {
+                ...dirFiles[key]
+            };
+        }
+    }
+
+    return filtered;
+}
+
+// filter by tag
+const handleFilterByTag = (event, filters) => {
+    const dirFiles = dirsData[currentDir].files;
+    const dirTags = dirsData[currentDir].tags;
+    let filtered = [];
+
+    if(filters.length === 0) {
+        return dirFiles;
+    }
+    for(let i=0; i<filters.length; i++) {
+        let filter = filters[i];
+        if(i<1) {
+            filtered = dirTags[filter];
+        }else {
+            let temp = dirTags[filter];
+            filtered = intersection(filtered, temp);
+        }
+        // if no result, return
+        if(filtered.length === 0) {
+            break;
+        }
+    }
+    let results = {};
+    filtered.forEach((fileId) => {
+        results[fileId] = {
+            ...dirFiles[fileId]
+        };
+    });
+    return results;
+}
+
+
+// helper functions
+const intersection = function(arr1, arr2) {
+    const filtered = arr1.filter(ele => arr2.includes(ele));
+    return filtered;
+};
+
 
 module.exports = {
     handleDirOpen: handleDirOpen,
+    handleReset: handleReset,
     handleAddFileTag: handleAddFileTag,
+    handleDeleteFileTag: handleDeleteFileTag,
+    handleSearchByFileName: handleSearchByFileName,
+    handleFilterByTag: handleFilterByTag
 }
 

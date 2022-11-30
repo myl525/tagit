@@ -21,6 +21,17 @@
     text-align: center;
 }
 
+.file-tag-selected {
+    font-size: 14px;
+    background-color: #FB7299;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    text-align: center;
+}
+
 .file-tag-delete-btn {
     position: absolute;
     right: -5px;

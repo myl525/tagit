@@ -3,9 +3,9 @@
     box-shadow: 0 0 4px lightgrey;
     width: 240px;
     height: 176px;
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
     overflow: scroll;
+    margin: 6px;
 }
 
 .open-addFileTagModal-btn {

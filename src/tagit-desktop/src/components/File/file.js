@@ -8,6 +8,7 @@ import { FileEarmarkImage } from "react-bootstrap-icons";
 import { FileEarmark } from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 
+// File Info
 const FileIcon = (props) => {
     const fileExtension = props.ext;
     const videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'mkv'];
@@ -33,9 +34,18 @@ const FileIcon = (props) => {
     }
 }
 
+const FileName = (props) => {
+    return(
+        <span className="file-info-name">
+            {props.name}
+        </span>
+    )
+}
+
+// File tags
 const FileTags = (props) => {
     const listOfFileTags = props.file.fileTags.map((fileTag) =>
-        <FileTag key={fileTag} tag={fileTag} type='file' />
+        <FileTag key={fileTag} tag={fileTag} fileId={props.file.id} type='file' deleteFileTag={props.deleteFileTag} />
     )
 
     return(
@@ -52,11 +62,9 @@ const File = (props) => {
         <div className="file-card">
             <div className="file-info">
                 <FileIcon ext={file.ext} />
-                <span className="file-info-name">
-                    {file.name}
-                </span>
+                <FileName name={file.name} />
             </div>
-            <FileTags handleShowModal={props.handleShowModal} file={file} />
+            <FileTags handleShowModal={props.handleShowModal} file={file} deleteFileTag={props.deleteFileTag} />
         </div>
     )
 }

@@ -23,7 +23,11 @@ function createWindow () {
 
 app.whenReady().then(() => {
     ipcMain.handle('dialog: openDir', MainController.handleDirOpen);
-    ipcMain.on('add-file-tag', MainController.handleAddFileTag);
+    ipcMain.handle('reset', MainController.handleReset);
+    ipcMain.handle('add-file-tag', MainController.handleAddFileTag);
+    ipcMain.handle('delete-file-tag', MainController.handleDeleteFileTag);
+    ipcMain.handle('search-by-file-name', MainController.handleSearchByFileName);
+    ipcMain.handle('filter-by-tag', MainController.handleFilterByTag);
     createWindow();
 })
 

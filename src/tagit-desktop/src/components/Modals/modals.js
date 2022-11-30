@@ -30,12 +30,12 @@ const AddTagModal = (props) => {
                 });
                 setInputVal(''); 
             }
-            
+            // add validation
         }
     }
 
-    const listOfAddedTags = addedTags.map((addedTag, index) => 
-        <FileTag key={index} type='modal' tag={addedTag} />
+    const listOfAddedTags = addedTags.map((addedTag) => 
+        <FileTag key={addedTag} type='modal' tag={addedTag} />
     )
 
     return(
