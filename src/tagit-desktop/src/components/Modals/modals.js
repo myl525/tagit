@@ -21,8 +21,8 @@ const AddTagModal = (props) => {
 
     const handleClickAddBtn = (evt) => {
         if(inputVal) {
-            const success = props.addFileTag(currentFile.id, inputVal);
-            if(success) {
+            if(!currentFile.fileTags.includes(inputVal)) {
+                props.addFileTag(currentFile.id, inputVal);
                 setAddedTags((addedTags) => {
                     const copy = addedTags.slice();
                     copy.push(inputVal);
@@ -30,17 +30,23 @@ const AddTagModal = (props) => {
                 });
                 setInputVal(''); 
             }
-            // add validation
         }
+        // add validation
     }
 
+    const handleEnterPress = (e) => {
+        if(e.key === 'Enter') {
+            handleClickAddBtn(e);
+        }
+    }
+    
     const listOfAddedTags = addedTags.map((addedTag) => 
         <FileTag key={addedTag} type='modal' tag={addedTag} />
     )
 
     return(
         <Modal show={props.show} onShow={onModalShow} onHide={props.handleCloseModal} centered>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>
                     {props.currentFile.name}
                 </Modal.Title>
@@ -48,7 +54,7 @@ const AddTagModal = (props) => {
 
             <Modal.Body>
                 <div className="add-file-tag-bar">
-                    <input value={inputVal} onChange={handleInputChange} className="add-file-tag-input" type='text' />
+                    <input value={inputVal} onChange={handleInputChange} className="add-file-tag-input" type='text' onKeyUp={(evt) => handleEnterPress(evt)} />
                     <PlusLg size={18} className="add-file-tag-btn" onClick={handleClickAddBtn} />
                 </div>
                 <div className="added-file-tags">

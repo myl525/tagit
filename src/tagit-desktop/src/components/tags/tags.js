@@ -6,33 +6,34 @@ const FileTag = (props) => {
     const handleClickDeleteBtn = (evt) => {
         props.deleteFileTag(props.fileId, props.tag);
     }
-
-    if(props.type === 'modal'){
-        return(
-            <div className="file-tag-wrapper">
-                <span className="file-tag">{props.tag}</span>
-            </div>
-        )
-    }else if(props.type === 'file') {
-        return(
-            <div className="file-tag-wrapper">
-                <span className="file-tag">{props.tag}</span>
-                <X className="file-tag-delete-btn" size={16} onClick={handleClickDeleteBtn} />
-            </div>
-        )
-    }else if(props.type === 'side') {
-        const className = props.select ? 'file-tag-selected' : 'file-tag';
-        
-        const onClick = () => {
-            props.handleClick(props.tag);
-        }
-
-        return(
-            <div className="file-tag-wrapper">
-                <span className={className} onClick={onClick} >{props.tag}</span>
-            </div>
-        )
-    }
+    return(
+        <div className="tag-wrapper">
+            <span className="tag">{props.tag}</span>
+            <X className="tag-delete-btn" size={16} onClick={handleClickDeleteBtn} />
+        </div>
+    )
 }
 
-export { FileTag }
+const ModalTag = (props) => {
+    return(
+        <div className="tag-wrapper">
+            <span className="tag">{props.tag}</span>
+        </div>
+    )
+}
+
+const FilterBarTag = (props) => {
+    const className = props.select ? 'tag-selected' : 'tag';
+        
+    const onClick = () => {
+        props.handleClick(props.tag);
+    }
+
+    return(
+        <div className="tag-wrapper">
+            <span className={className} onClick={onClick} >{props.tag}</span>
+        </div>
+    )
+}
+
+export { FileTag, ModalTag, FilterBarTag }

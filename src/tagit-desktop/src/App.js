@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import bootstrap elements
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import components
@@ -8,6 +8,22 @@ import Main from './components/main/main';
 const App = () => {
     const [files, setFiles] = useState({});
     const [tags, setTags] = useState({});
+    const [filter, setFilter] = useState({tagFilters:[], keyword: ''});
+
+    const handleTagFilters = (tagFilters) => {
+        setFilter({
+            ...filter,
+            tagFilters: [...tagFilters]
+        })
+    }
+
+    const handleKeyword = (keyword) => {
+        setFilter({
+            ...filter,
+            keyword: keyword
+        })
+    }
+
     // open directory
     const openDir = async () => {
         let data = await window.sidesAPIs.openDir();
@@ -15,44 +31,48 @@ const App = () => {
         setTags(data.tags);
     }
     // reset 
-    const reset = async () => {
-        let data = await window.mainAPIs.reset();
-        setFiles(data.files);
-        setTags(data.tags);
+    const resetFilter = () => {
+        setFilter({tagFilters:[], keyword: ''});
     }
 
     // add tags for file
     const addFileTag = async (fileId, newTag) => {
-        if(files[fileId].fileTags.includes(newTag)) {
-            return false;
-        }else {
-            let data = await window.mainAPIs.addFileTag(Object.keys(files), fileId, newTag);
-            setFiles(data.files);
-            setTags(data.tags);
-            return true;
-        }
+        let data = await window.mainAPIs.addFileTag(Object.keys(files), fileId, newTag);
+        setFiles(data.files);
+        setTags(data.tags);
     }
     // delete tags of file
     const deleteFileTag = async (fileId, tag) => {
         let data = await window.mainAPIs.deleteFileTag(Object.keys(files), fileId, tag);
+        if(!Object.keys(data.tags).includes(tag) && filter.tagFilters.includes(tag)) {
+            // if this tag no longer exist and exist in filter, remove it from filter
+            const updated = filter.tagFilters.filter(ele => ele !== tag);
+            setFilter({
+                ...filter,
+                tagFilters: [...updated]
+            })
+        } else {
+            searchFile(filter);
+        }
         setFiles(data.files);
         setTags(data.tags);
     }
-    // search by file name
-    const searchByFileName = async (fileName) => {
-        let data = await window.mainAPIs.searchByFileName(fileName);
+    
+    // filter files by tag and filename
+    const searchFile = async (filter) => {
+        let data = await window.mainAPIs.searchFile(filter);
         setFiles(data);
     }
-    // filter by tag
-    const filterByTag = async (filters) => {
-        let data = await window.sidesAPIs.filterByTag(filters);
-        setFiles(data);
-    };
-    
+
+    useEffect(() => {
+        searchFile(filter);
+    }, [filter]);
+
+
     return(
         <>
-            <Sides openDir={() => openDir()} tags={tags} filterByTag={filterByTag} />
-            <Main files={files} addFileTag={addFileTag} reset={reset} deleteFileTag={deleteFileTag} searchByFileName={searchByFileName} />
+            <Sides openDir={() => openDir()} />
+            <Main tags={tags} files={files} filter={filter} addFileTag={addFileTag} deleteFileTag={deleteFileTag} handleKeyword={handleKeyword} handleTagFilters={handleTagFilters} resetFilter={resetFilter} />
         </>
     );
 }

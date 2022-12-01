@@ -80,11 +80,6 @@ async function handleDirOpen() {
     }
 }
 
-// reset
-const handleReset = () => {
-    return dirsData[currentDir];
-}
-
 // add file tag
 const handleAddFileTag = (event, obj) => {
     const files = obj.files;
@@ -145,9 +140,31 @@ const handleDeleteFileTag = (event, obj) => {
     return {files: retFiles, tags: dirTags};
 }
 
-// search by file name
-const handleSearchByFileName = (event, fileName) => {
+// search file
+const handleSearchFile = (event, filter) => {
     const dirFiles = dirsData[currentDir].files;
+    const tagFilters = filter.tagFilters;
+    const keyword = filter.keyword;
+
+    //first search by file name
+    if(keyword && tagFilters.length > 0) {
+        let filteredByKeyword = handleSearchByFileName(dirFiles, keyword);
+        let filteredByTags = handleFilterByTag(filteredByKeyword, tagFilters);
+
+        return filteredByTags;
+    }else if(keyword) {
+
+        return handleSearchByFileName(dirFiles, keyword);
+    }else if(tagFilters.length > 0) {
+
+        return handleFilterByTag(dirFiles, tagFilters);
+    }else {
+        return dirFiles;
+    }
+}
+
+// search by file name
+const handleSearchByFileName = (dirFiles, fileName) => {
     let filtered = {};
 
     for(key in dirFiles) {
@@ -162,14 +179,10 @@ const handleSearchByFileName = (event, fileName) => {
 }
 
 // filter by tag
-const handleFilterByTag = (event, filters) => {
-    const dirFiles = dirsData[currentDir].files;
+const handleFilterByTag = (dirFiles, filters) => {
     const dirTags = dirsData[currentDir].tags;
     let filtered = [];
 
-    if(filters.length === 0) {
-        return dirFiles;
-    }
     for(let i=0; i<filters.length; i++) {
         let filter = filters[i];
         if(i<1) {
@@ -180,14 +193,17 @@ const handleFilterByTag = (event, filters) => {
         }
         // if no result, return
         if(filtered.length === 0) {
-            break;
+            return {};
         }
     }
     let results = {};
+
     filtered.forEach((fileId) => {
-        results[fileId] = {
-            ...dirFiles[fileId]
-        };
+        if(dirFiles[fileId]) {
+            results[fileId] = {
+                ...dirFiles[fileId]
+            };
+        }
     });
     return results;
 }
@@ -202,10 +218,8 @@ const intersection = function(arr1, arr2) {
 
 module.exports = {
     handleDirOpen: handleDirOpen,
-    handleReset: handleReset,
     handleAddFileTag: handleAddFileTag,
     handleDeleteFileTag: handleDeleteFileTag,
-    handleSearchByFileName: handleSearchByFileName,
-    handleFilterByTag: handleFilterByTag
+    handleSearchFile: handleSearchFile
 }
 

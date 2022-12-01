@@ -45,13 +45,18 @@ const FileName = (props) => {
 // File tags
 const FileTags = (props) => {
     const listOfFileTags = props.file.fileTags.map((fileTag) =>
-        <FileTag key={fileTag} tag={fileTag} fileId={props.file.id} type='file' deleteFileTag={props.deleteFileTag} />
+        <FileTag key={fileTag} tag={fileTag} fileId={props.file.id} deleteFileTag={props.deleteFileTag} />
     )
+
+    const onClickPlusTag = () => {
+        props.changeCurrentFile(props.file);
+        props.handleShowModal();
+    }
 
     return(
         <div className="file-tags">
             {listOfFileTags}
-            <Plus className="open-addFileTagModal-btn" onClick={props.handleShowModal} id={props.file.id} />
+            <Plus className="open-addFileTagModal-btn" onClick={onClickPlusTag} id={props.file.id} />
         </div>
     )
 }
@@ -64,7 +69,7 @@ const File = (props) => {
                 <FileIcon ext={file.ext} />
                 <FileName name={file.name} />
             </div>
-            <FileTags handleShowModal={props.handleShowModal} file={file} deleteFileTag={props.deleteFileTag} />
+            <FileTags handleShowModal={props.handleShowModal} file={file} changeCurrentFile={props.changeCurrentFile} deleteFileTag={props.deleteFileTag} />
         </div>
     )
 }

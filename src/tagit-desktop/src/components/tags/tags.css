@@ -1,4 +1,4 @@
-.file-tag-wrapper {
+.tag-wrapper {
     position: relative;
     display: inline-block;
     width: fit-content;
@@ -6,11 +6,11 @@
     margin: 2px 4px;
 }
 
-.file-tag-wrapper:hover > .file-tag-delete-btn {
+.tag-wrapper:hover > .tag-delete-btn {
     visibility: visible;
 }
 
-.file-tag {
+.tag {
     font-size: 14px;
     background-color: #F1F2F3;
     color: #61666D;
@@ -21,7 +21,7 @@
     text-align: center;
 }
 
-.file-tag-selected {
+.tag-selected {
     font-size: 14px;
     background-color: #FB7299;
     color: white;
@@ -32,7 +32,7 @@
     text-align: center;
 }
 
-.file-tag-delete-btn {
+.tag-delete-btn {
     position: absolute;
     right: -5px;
     top: -5px;
@@ -41,7 +41,7 @@
     visibility: hidden;
 }
 
-.file-tag-delete-btn:hover {
+.tag-delete-btn:hover {
     cursor:pointer;
     opacity: 0.5;
 }

@@ -1,0 +1,27 @@
+.open-filter-bar-btn {
+    position: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    background-color: #e6e8e9;
+    transition: color 0.25s;
+}
+
+.open-filter-bar-btn:hover {
+    color: #FB7299;
+    cursor: pointer;
+    transition: color 0.25s;
+}
+
+.filter-bar {
+    margin-left: 70px;
+    width: 260px !important;
+}
+
+.filters-selected {
+    height: 120px;
+    border-bottom: lightgray solid 1px;
+    overflow: scroll;
+    margin-bottom: 12px;
+}

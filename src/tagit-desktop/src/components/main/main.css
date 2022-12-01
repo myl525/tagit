@@ -2,12 +2,13 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    margin-left: 90px;
+    margin-left: 70px;
 }
 
 .top-navbar {
     justify-content: space-between;
     padding: 8px 24px;
+    margin-left: 20px;
 }
 
 .home-btn {
@@ -25,8 +26,8 @@
     background-color: #F6F7F8;
     border: lightgray solid 1px;
     border-radius: 4px;
-    width: 400px;
-    padding: 6px 12px;
+    width: 300px;
+    padding: 6px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,15 +52,27 @@
     width: 95%;
 }
 
-.search-btn {
-    transition: all 0.3s;
+.search-input-clear-btn {
+    opacity: 0.35;
+    transition: opacity 0.25s;
 }
 
-.search-btn:hover {
+.search-input-clear-btn:hover {
+    cursor: pointer;   
+    opacity: 1;
+    transition: opacity 0.25s;
+}
+
+.search-btn {
+    transition: all 0.3s;
+    margin-right: 4px;
+}
+
+/* .search-btn:hover {
     opacity: 0.6;
     cursor: pointer;
     transition: all 0.3s;
-}
+} */
 
 .files {
     padding: 24px;
@@ -68,4 +81,5 @@
     align-items: center;
     justify-content: space-between; */
     gap: 16px;
+    margin-left: 20px;
 }
