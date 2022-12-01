@@ -57,6 +57,10 @@
     transition: opacity 0.25s;
 }
 
+.element-hide {
+    visibility: hidden;
+}
+
 .search-input-clear-btn:hover {
     cursor: pointer;   
     opacity: 1;
@@ -73,6 +77,11 @@
     cursor: pointer;
     transition: all 0.3s;
 } */
+
+.nav-files-divider {
+    z-index: -1;
+    margin: 2px;
+}
 
 .files {
     padding: 24px;

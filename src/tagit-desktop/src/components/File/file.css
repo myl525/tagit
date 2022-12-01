@@ -5,7 +5,8 @@
     height: 176px;
     display: inline-block;
     overflow: scroll;
-    margin: 6px;
+    margin: 10px;
+    border-radius: 6px;
 }
 
 .open-addFileTagModal-btn {

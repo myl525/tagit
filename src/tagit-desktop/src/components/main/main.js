@@ -12,7 +12,7 @@ import { XCircleFill } from 'react-bootstrap-icons';
 // main-top
 const TopNavBar = (props) => {
     const [inputVal, setInputVal] = useState('');
-    
+
     const handleKeyword = props.handleKeyword;
 
     const onClickHomeBtn = () => {
@@ -43,7 +43,7 @@ const TopNavBar = (props) => {
             <div className='search-bar'>
                 <Search size={18}  className='search-btn' />
                 <input type="text" className='search-input' placeholder='Filename' value={inputVal} onChange={handleInputChange} onKeyUp={(evt) => handleEnterPress(evt)}/>
-                <XCircleFill size={18} className='search-input-clear-btn' onClick={onClickClearBtn} /> 
+                <XCircleFill size={18} className={inputVal?'search-input-clear-btn':'element-hide'} onClick={onClickClearBtn} /> 
             </div>
         </Navbar>
     )
@@ -84,6 +84,7 @@ const Main = (props) => {
             <FilterBar tags={props.tags} filter={props.filter} handleTagFilters={props.handleTagFilters} />
             <AddTagModal show={show} handleCloseModal={handleCloseModal} addFileTag={props.addFileTag} currentFile={currentFile} />
             <TopNavBar handleKeyword={props.handleKeyword} resetFilter={props.resetFilter} />
+            <hr className='nav-files-divider'></hr>
             <Files files = {props.files} handleShowModal={handleShowModal} changeCurrentFile={changeCurrentFile} deleteFileTag={props.deleteFileTag} />
         </div>
     )
