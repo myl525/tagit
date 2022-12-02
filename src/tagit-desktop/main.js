@@ -26,6 +26,7 @@ app.whenReady().then(() => {
     ipcMain.handle('add-file-tag', MainController.handleAddFileTag);
     ipcMain.handle('delete-file-tag', MainController.handleDeleteFileTag);
     ipcMain.handle('search-file', MainController.handleSearchFile);
+    ipcMain.handle('open-file', MainController.handleOpenFile);
     createWindow();
 })
 

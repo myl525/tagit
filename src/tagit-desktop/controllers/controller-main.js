@@ -163,7 +163,6 @@ const handleSearchFile = (event, filter) => {
             return dirFiles;
         }
     }
-    
 }
 
 // search by file name
@@ -211,6 +210,10 @@ const handleFilterByTag = (dirFiles, filters) => {
     return results;
 }
 
+// open file
+const handleOpenFile = (event, filepath) => {
+    shell.openPath(filepath);
+}
 
 // helper functions
 const intersection = function(arr1, arr2) {
@@ -223,6 +226,7 @@ module.exports = {
     handleDirOpen: handleDirOpen,
     handleAddFileTag: handleAddFileTag,
     handleDeleteFileTag: handleDeleteFileTag,
-    handleSearchFile: handleSearchFile
+    handleSearchFile: handleSearchFile,
+    handleOpenFile: handleOpenFile
 }
 

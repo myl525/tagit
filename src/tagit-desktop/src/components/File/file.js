@@ -36,8 +36,12 @@ import { Plus } from "react-bootstrap-icons";
 
 
 const FileName = (props) => {
+    const openFile = () => {
+        window.mainAPIs.openFile(props.filepath);
+    }
+
     return(
-        <span className="file-info-name">
+        <span className="file-info-name" onClick={openFile}>
             {props.name}
         </span>
     )
@@ -68,7 +72,7 @@ const File = (props) => {
     return(
         <div className="file-card">
             <div className="file-info">
-                <FileName name={file.name} />
+                <FileName name={file.name} filepath={file.filepath}/>
             </div>
             <FileTags handleShowModal={props.handleShowModal} file={file} changeCurrentFile={props.changeCurrentFile} deleteFileTag={props.deleteFileTag} />
         </div>
