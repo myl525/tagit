@@ -1,5 +1,4 @@
 .file-card {
-    padding: 12px;
     box-shadow: 0 0 4px lightgrey;
     width: 240px;
     height: 176px;
@@ -32,24 +31,32 @@
 }
 
 .file-info {
-    margin: 0 4px;
-    font-size: 18px;
+    font-size: 16px;
+    padding: 6px 12px 12px 12px;
+    height: 40px;
+    background-color: #F1F2F3;
+    margin-bottom: 8px;
 }
 
-.file-info-icon {
+/* .file-info-icon {
     vertical-align: middle;
-}
+} */
 
 .file-info-name {
+    display: inline-block;
     font-weight: bold;
     transition: color 0.25s;
-    word-break: break-all;
-    vertical-align: middle;
     margin-left: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 220px;
 }
 
 .file-info-name:hover {
     color: #FB7299;
     cursor: pointer;
     transition: color 0.25s;
+    overflow: scroll;
+    text-overflow: unset;
 }

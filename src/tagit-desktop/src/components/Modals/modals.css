@@ -1,4 +1,4 @@
-.add-file-tag-bar {
+.add-file-tag-bar, .add-file-tag-bar-error {
     background-color: #F6F7F8;
     border: lightgray solid 1px;
     border-radius: 4px;
@@ -11,9 +11,15 @@
     margin-bottom: 6px;
 }
 
-.add-file-tag-bar:focus-within {
+.add-file-tag-bar:focus-within, .add-file-tag-bar:hover {
     background-color: white;
     border: solid #FB7299 1px;
+    transition: all 0.3s;
+}
+
+.add-file-tag-bar-error:focus-within {
+    background-color: white;
+    border: solid red 2px;
     transition: all 0.3s;
 }
 
@@ -24,7 +30,7 @@
     width: 95%;
 }
 
-.add-file-tag-btn{
+/* .add-file-tag-btn{
     transition: all 0.3s;
 }
 
@@ -32,4 +38,4 @@
     opacity: 0.6;
     cursor: pointer;
     transition: all 0.3s;
-}
+} */

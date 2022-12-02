@@ -11,7 +11,7 @@ function readFilesSync(dir) {
     const files = [];
   
     fs.readdirSync(dir).forEach(filename => {
-        const name = path.parse(filename).name;
+        const name = filename;
         const ext = path.parse(filename).ext;
         const filepath = path.resolve(dir, filename);
         const stat = fs.statSync(filepath);
@@ -142,25 +142,28 @@ const handleDeleteFileTag = (event, obj) => {
 
 // search file
 const handleSearchFile = (event, filter) => {
-    const dirFiles = dirsData[currentDir].files;
-    const tagFilters = filter.tagFilters;
-    const keyword = filter.keyword;
+    if(currentDir) {
+        const dirFiles = dirsData[currentDir].files;
+        const tagFilters = filter.tagFilters;
+        const keyword = filter.keyword;
 
-    //first search by file name
-    if(keyword && tagFilters.length > 0) {
-        let filteredByKeyword = handleSearchByFileName(dirFiles, keyword);
-        let filteredByTags = handleFilterByTag(filteredByKeyword, tagFilters);
+        //first search by file name
+        if(keyword && tagFilters.length > 0) {
+            let filteredByKeyword = handleSearchByFileName(dirFiles, keyword);
+            let filteredByTags = handleFilterByTag(filteredByKeyword, tagFilters);
 
-        return filteredByTags;
-    }else if(keyword) {
+            return filteredByTags;
+        }else if(keyword) {
 
-        return handleSearchByFileName(dirFiles, keyword);
-    }else if(tagFilters.length > 0) {
+            return handleSearchByFileName(dirFiles, keyword);
+        }else if(tagFilters.length > 0) {
 
-        return handleFilterByTag(dirFiles, tagFilters);
-    }else {
-        return dirFiles;
+            return handleFilterByTag(dirFiles, tagFilters);
+        }else {
+            return dirFiles;
+        }
     }
+    
 }
 
 // search by file name

@@ -25,3 +25,45 @@
     overflow: scroll;
     margin-bottom: 12px;
 }
+
+.add-filter-bar, .add-filter-bar-error {
+    background-color: #F6F7F8;
+    border: lightgray solid 1px;
+    border-radius: 4px;
+    width: 250px;
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+    margin-bottom: 2px;
+}
+
+.add-filter-bar:focus-within, .add-filter-bar:hover {
+    background-color: white;
+    border: solid #FB7299 1px;
+    transition: all 0.3s;
+}
+
+.add-filter-bar-error:focus-within {
+    background-color: white;
+    border: solid red 2px;
+    transition: all 0.3s;
+}
+
+.add-filter-input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    width: 95%;
+}
+
+/* .add-filter-btn{
+    transition: all 0.3s;
+}
+
+.add-filter-btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+    transition: all 0.3s;
+} */

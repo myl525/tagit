@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 const AddTagModal = (props) => {
     const [addedTags, setAddedTags] = useState([]);
     const [inputVal, setInputVal] = useState('');
+    const [error, setError] = useState(false);
 
     const currentFile = props.currentFile;
     const onModalShow = () => {
@@ -19,19 +20,25 @@ const AddTagModal = (props) => {
         setInputVal(evt.target.value);
     }
 
-    const handleClickAddBtn = (evt) => {
-        if(inputVal) {
-            if(!currentFile.fileTags.includes(inputVal)) {
-                props.addFileTag(currentFile.id, inputVal);
-                setAddedTags((addedTags) => {
-                    const copy = addedTags.slice();
-                    copy.push(inputVal);
-                    return copy;
-                });
-                setInputVal(''); 
-            }
+    const handleInputFocusOut = () => {
+        if(error) {
+            setError(false);
         }
-        // add validation
+    }
+
+    const handleClickAddBtn = (evt) => {
+        if(inputVal && !currentFile.fileTags.includes(inputVal) && !addedTags.includes(inputVal)) {
+            props.addFileTag(currentFile.id, inputVal);
+            setAddedTags((addedTags) => {
+                const copy = addedTags.slice();
+                copy.push(inputVal);
+                return copy;
+            });
+            setError(false);
+            setInputVal(''); 
+        }else {
+            setError(true);
+        }
     }
 
     const handleEnterPress = (e) => {
@@ -53,9 +60,9 @@ const AddTagModal = (props) => {
             </Modal.Header>
 
             <Modal.Body>
-                <div className="add-file-tag-bar">
-                    <input value={inputVal} onChange={handleInputChange} className="add-file-tag-input" type='text' onKeyUp={(evt) => handleEnterPress(evt)} />
-                    <PlusLg size={18} className="add-file-tag-btn" onClick={handleClickAddBtn} />
+                <div className={error?"add-file-tag-bar-error":"add-file-tag-bar"}>
+                    <PlusLg />
+                    <input value={inputVal} onChange={handleInputChange} className="add-file-tag-input" type='text' onKeyUp={(evt) => handleEnterPress(evt)} onBlur={handleInputFocusOut} />
                 </div>
                 <div className="added-file-tags">
                     {listOfAddedTags}

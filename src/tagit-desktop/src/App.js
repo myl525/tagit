@@ -61,7 +61,9 @@ const App = () => {
     // filter files by tag and filename
     const searchFile = async (filter) => {
         let data = await window.mainAPIs.searchFile(filter);
-        setFiles(data);
+        if(data) {
+            setFiles(data); 
+        }
     }
 
     useEffect(() => {
