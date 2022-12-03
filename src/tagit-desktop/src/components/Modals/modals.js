@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './modals.css';
-import { FileTag } from "../tags/tags";
+import { ModalTag } from "../tags/tags";
 import { Modal } from "react-bootstrap";
 import { PlusLg } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
@@ -48,7 +48,7 @@ const AddTagModal = (props) => {
     }
     
     const listOfAddedTags = addedTags.map((addedTag) => 
-        <FileTag key={addedTag} type='modal' tag={addedTag} />
+        <ModalTag key={addedTag} tag={addedTag} />
     )
 
     return(

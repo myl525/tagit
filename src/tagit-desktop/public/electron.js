@@ -1,11 +1,11 @@
-const { app, BrowserWindow, shell, dialog, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path');
-const fs = require('fs');
+const isDev = require('electron-is-dev');
+const MainController = require('./controller-main.js');
 
-const MainController = require('./controllers/controller-main.js');
-
+let win;
 function createWindow () {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
@@ -15,10 +15,9 @@ function createWindow () {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-
-  win.loadURL('http://localhost:3000');
-
-  win.webContents.openDevTools()
+  win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  win.on('closed', () => win=null);
+  // win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
@@ -37,7 +36,6 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }

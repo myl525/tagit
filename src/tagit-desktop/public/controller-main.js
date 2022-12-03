@@ -1,9 +1,8 @@
-const { shell, dialog, ipcMain } = require('electron')
+const { shell, dialog } = require('electron')
 const path = require('path');
 const fs = require('fs');
-// import files
-const dirsData = require('../data/data.json');
-let currentDir = '';
+const Store = require('electron-store');
+const data = new Store();
 
 /** help functions */
 // browse directory
@@ -39,12 +38,15 @@ async function handleDirOpen() {
     if(canceled) {
         return;
     }else {
-        const dirName = path.basename(filePaths[0]);
-        currentDir = dirName;
+        // update currentDir
+        const currentDir = path.basename(filePaths[0]);
+        data.set('currentDir', currentDir);
         const files = readFilesSync(filePaths[0]);
-        if(dirsData[dirName]) {
+
+        const currentDirData = data.get(currentDir);
+        if(currentDirData) {
             // check whether there is new file
-            const dirFiles = dirsData[dirName].files;
+            const dirFiles = currentDirData.files;
             files.forEach((file) => {
                 if(!dirFiles[file.id]) {
                     // create new file entry
@@ -57,8 +59,9 @@ async function handleDirOpen() {
                     }
                 }
             })
-            fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
-            return dirsData[dirName];
+            // fs.writeFileSync(dataFilePath, JSON.stringify(dirsData));
+            data.set(currentDir, currentDirData);
+            return currentDirData;
         }else {
             const obj = {
                 files: {},
@@ -73,8 +76,8 @@ async function handleDirOpen() {
                     fileTags: []
                 };
             });
-            dirsData[dirName] = obj;
-            fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
+            data.set(currentDir, obj)
+            // fs.writeFileSync(dataFilePath, JSON.stringify(dirsData));
             return obj;
         }
     }
@@ -85,8 +88,10 @@ const handleAddFileTag = (event, obj) => {
     const files = obj.files;
     const fileId = obj.fileId;
     const newTag = obj.newTag;
-    const dirFiles = dirsData[currentDir].files;
-    const dirTags = dirsData[currentDir].tags;
+    const currentDir = data.get('currentDir');
+    const currentDirData = data.get(currentDir);
+    const dirFiles = currentDirData.files;
+    const dirTags = currentDirData.tags;
 
     dirFiles[fileId].fileTags.push(newTag);
     if(dirTags[newTag]) {
@@ -95,8 +100,8 @@ const handleAddFileTag = (event, obj) => {
         dirTags[newTag] = [fileId];
     }
 
-    fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
-
+    // fs.writeFileSync(dataFilePath, JSON.stringify(dirsData));
+    data.set(currentDir, currentDirData);
     let retFiles = {};
     files.forEach((file) => {
         retFiles[file] = {
@@ -112,8 +117,10 @@ const handleDeleteFileTag = (event, obj) => {
     const files = obj.files;
     const fileId = obj.fileId;
     const tagName = obj.tag;
-    const dirFiles = dirsData[currentDir].files;
-    const dirTags = dirsData[currentDir].tags;
+    const currentDir = data.get('currentDir');
+    const currentDirData = data.get(currentDir);
+    const dirFiles = currentDirData.files;
+    const dirTags = currentDirData.tags;
 
     // remove this tag from selected file
     let file = dirFiles[fileId];
@@ -128,8 +135,8 @@ const handleDeleteFileTag = (event, obj) => {
         delete dirTags[tagName];
     }
 
-    fs.writeFileSync(path.resolve(process.cwd(), 'data/data.json'), JSON.stringify(dirsData));
-    
+    // fs.writeFileSync(dataFilePath, JSON.stringify(dirsData));
+    data.set(currentDir, currentDirData);
     let retFiles = {};
     files.forEach((file) => {
         retFiles[file] = {
@@ -142,8 +149,10 @@ const handleDeleteFileTag = (event, obj) => {
 
 // search file
 const handleSearchFile = (event, filter) => {
+    const currentDir = data.get('currentDir');
+    const currentDirData = data.get(currentDir);
     if(currentDir) {
-        const dirFiles = dirsData[currentDir].files;
+        const dirFiles = currentDirData.files;
         const tagFilters = filter.tagFilters;
         const keyword = filter.keyword;
 
@@ -182,7 +191,9 @@ const handleSearchByFileName = (dirFiles, fileName) => {
 
 // filter by tag
 const handleFilterByTag = (dirFiles, filters) => {
-    const dirTags = dirsData[currentDir].tags;
+    const currentDir = data.get('currentDir');
+    const currentDirData = data.get(currentDir);
+    const dirTags = currentDirData.tags;
     let filtered = [];
 
     for(let i=0; i<filters.length; i++) {
